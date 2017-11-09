@@ -1,5 +1,6 @@
 #Declare DB details variables
-DB_HOST=52.187.3.60
+echo "Please enter Host/IP"
+read DB_HOST
 
 echo "Please enter root user MySQL password!"
 read rootpasswd
