@@ -14,7 +14,7 @@ echo
 printf "***** Start DB User Creation *****"
 echo 
 
-mysql -h $DB_HOST -u root -p${rootpasswd} -e "SHOW DATABASES LIKE 'f%';" | while read -r rcDatabase
+mysql -B -h $DB_HOST -u root -p${rootpasswd} -e "SHOW DATABASES LIKE 'f%';" | tail -n +2 | while read -r rcDatabase
 do
 #MAINDB=$rcDatabase
 : ' 
