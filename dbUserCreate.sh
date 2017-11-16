@@ -2,19 +2,19 @@
 
 #Declare DB details variables
 echo "Please enter Host/IP"
-#read DB_HOST
-DB_HOST="localhost"
+read DB_HOST
+#DB_HOST="localhost"
 echo "Please enter the database name or prefix (if matched with multiple then individual user will create)"
-#read databasePrefix
+read databasePrefix
 
 echo "Please enter root user MySQL password!"
-#read rootpasswd
-rootpasswd="aceturtle"
+read rootpasswd
+#rootpasswd="aceturtle"
 echo
 printf "***** Start DB User Creation *****"
 echo 
 
-mysql -B -h $DB_HOST -u root -p${rootpasswd} -e "SHOW DATABASES LIKE 'f%';" | tail -n +2 | while read -r rcDatabase
+mysql -B -h $DB_HOST -u root -p${rootpasswd} -e "SHOW DATABASES LIKE '${databasePrefix}%';" | tail -n +2 | while read -r rcDatabase
 do
 #MAINDB=$rcDatabase
 : ' 
@@ -61,10 +61,6 @@ mysql -uroot -p${rootpasswd} -e "CREATE USER ${USERNAME}@'%' IDENTIFIED BY '"${P
 mysql -uroot -p${rootpasswd} -e "GRANT SELECT ON $rcDatabase.* TO ${USERNAME}@'%';"
 mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
 
-#mysql delete mysql users
-#mysql -uroot -p${rootpasswd} -e "DELETE FROM mysql.user WHERE user LIKE 'rubicon%';"
-#mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
-
 echo
 echo "----- $rcDatabase DATABASE DEV USER ACCESS -----"
 echo
@@ -90,7 +86,7 @@ mysql -uroot -p${rootpasswd} -e "GRANT SELECT ON $rcDatabase.* TO ${USERNAME}@'%
 mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
 
 #mysql delete mysql users
-#mysql -uroot -p${rootpasswd} -e "DELETE FROM mysql.user WHERE user LIKE 'rubicon%';"
+#mysql -uroot -p${rootpasswd} -e "DELETE FROM mysql.user WHERE user LIKE '${databasePrefix}%';"
 #mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
 
 echo
