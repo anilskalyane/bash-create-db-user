@@ -48,6 +48,7 @@ echo "----- END APP USER ACCESS -----"
 echo
 echo
 
+# Developer access started
 # assign username
 USERNAME="$MAINDB""Dev"
 
@@ -56,6 +57,34 @@ PASSWDDB="$(openssl rand -base64 15)"
 
 # create developer DB user access - only view access 
 
+mysql -uroot -p${rootpasswd} -e "CREATE USER ${USERNAME}@'%' IDENTIFIED BY '"${PASSWDDB}"';"
+mysql -uroot -p${rootpasswd} -e "GRANT SELECT ON $rcDatabase.* TO ${USERNAME}@'%';"
+mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
+
+#mysql delete mysql users
+#mysql -uroot -p${rootpasswd} -e "DELETE FROM mysql.user WHERE user LIKE 'rubicon%';"
+#mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
+
+echo
+echo "----- $rcDatabase DATABASE DEV USER ACCESS -----"
+echo
+
+echo "USERNAME: $USERNAME" 
+echo "PASSWORD: $PASSWDDB" 
+
+echo
+echo "----- END DEV USER ACCESS -----"
+echo
+echo
+
+#Tester User strated
+# assign username
+USERNAME="$MAINDB""QA"
+
+# create random password for DEV USER
+PASSWDDB="$(openssl rand -base64 15)"
+
+# create developer DB user access - only view access 
 mysql -uroot -p${rootpasswd} -e "CREATE USER ${USERNAME}@'%' IDENTIFIED BY '"${PASSWDDB}"';"
 mysql -uroot -p${rootpasswd} -e "GRANT SELECT ON $rcDatabase.* TO ${USERNAME}@'%';"
 mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
