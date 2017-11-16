@@ -14,6 +14,11 @@ echo
 printf "***** Start DB User Creation *****"
 echo 
 
+#Create CSV file with DB details
+echo -e "Host\tDatabase\tUsername\tPassword" >> dbAppUserDetails.csv
+echo -e "Host\tDatabase\tUsername\tPassword" >> dbDevUserDetails.csv
+echo -e "Host\tDatabase\tUsername\tPassword" >> dbQAUserDetails.csv
+
 mysql -B -h $DB_HOST -u root -p${rootpasswd} -e "SHOW DATABASES LIKE '${databasePrefix}%';" | tail -n +2 | while read -r rcDatabase
 do
 #MAINDB=$rcDatabase
@@ -42,7 +47,7 @@ echo
 
 echo "USERNAME: $USERNAME"
 echo "PASSWORD: $PASSWDDB" 
-
+echo -e "$DB_HOST\t$rcDatabase\t$USERNAME\t$PASSWDDB" >> dbAppUserDetails.csv
 echo
 echo "----- END APP USER ACCESS -----"
 echo
@@ -67,6 +72,7 @@ echo
 
 echo "USERNAME: $USERNAME" 
 echo "PASSWORD: $PASSWDDB" 
+echo -e "$DB_HOST\t$rcDatabase\t$USERNAME\t$PASSWDDB" >> dbDevUserDetails.csv
 
 echo
 echo "----- END DEV USER ACCESS -----"
@@ -95,7 +101,7 @@ echo
 
 echo "USERNAME: $USERNAME" 
 echo "PASSWORD: $PASSWDDB" 
-
+echo -e "$DB_HOST\t$rcDatabase\t$USERNAME\t$PASSWDDB" >> dbQAUserDetails.csv
 echo
 echo "----- END DEV USER ACCESS -----"
 echo
