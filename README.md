@@ -1,4 +1,3 @@
-# create-db-users-using-bashscript
 bash-create-db-user
 ===================
 
