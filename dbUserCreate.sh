@@ -2,14 +2,14 @@
 
 #Declare DB details variables
 echo "Please enter Host/IP"
-read DB_HOST
-
+#read DB_HOST
+DB_HOST="localhost"
 echo "Please enter the database name or prefix (if matched with multiple then individual user will create)"
-read databasePrefix
+#read databasePrefix
 
 echo "Please enter root user MySQL password!"
-read rootpasswd
-
+#read rootpasswd
+rootpasswd="aceturtle"
 echo
 printf "***** Start DB User Creation *****"
 echo 
@@ -24,14 +24,15 @@ MAINDB=${rcDatabase//_/}
 #MAINDB=${rcDatabase//-/_}
 
 # assign username
-USERNAME="$MAINDB""AppAccess"
+USERNAME="$MAINDB""App"
 
 # create random password for APP USER
 PASSWDDB="$(openssl rand -base64 15)"
 
 # create application DB user access
-mysql -uroot -p${rootpasswd} -e "CREATE USER '${USERNAME}'@'%' IDENTIFIED BY '${PASSWDDB}';"
-mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON ${rcDatabase}.* TO '${USERNAME}'@'%';"
+
+mysql -uroot -p${rootpasswd} -e "CREATE USER ${USERNAME}@'%' IDENTIFIED BY '"${PASSWDDB}"';"
+mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON $rcDatabase.* TO ${USERNAME}@'%';"
 mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
 
 echo
@@ -48,15 +49,20 @@ echo
 echo
 
 # assign username
-USERNAME="$MAINDB""DevAccess"
+USERNAME="$MAINDB""Dev"
 
 # create random password for DEV USER
 PASSWDDB="$(openssl rand -base64 15)"
 
 # create developer DB user access - only view access 
-mysql -uroot -p${rootpasswd} -e "CREATE USER ${USERNAME}@'%' IDENTIFIED BY '${PASSWDDB}';"
-mysql -uroot -p${rootpasswd} -e "GRANT SELECT PRIVILEGES ON ${rcDatabase}.* TO '${USERNAME}'@'%';"
+
+mysql -uroot -p${rootpasswd} -e "CREATE USER ${USERNAME}@'%' IDENTIFIED BY '"${PASSWDDB}"';"
+mysql -uroot -p${rootpasswd} -e "GRANT SELECT ON $rcDatabase.* TO ${USERNAME}@'%';"
 mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
+
+#mysql delete mysql users
+#mysql -uroot -p${rootpasswd} -e "DELETE FROM mysql.user WHERE user LIKE 'rubicon%';"
+#mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
 
 echo
 echo "----- $rcDatabase DATABASE DEV USER ACCESS -----"
@@ -71,5 +77,5 @@ echo
 echo
 
 done
-
 echo "***** Start DB User Creation *****"
+
